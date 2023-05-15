@@ -5,6 +5,7 @@ import { UiArticleListComponent } from '../ui-components/ui-article-list.compone
 import { UiPaginationComponent } from '../ui-components/ui-pagination.component';
 import { HttpRequestStateErrorPipe } from '../services/articles.service';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-article-list-cs',
@@ -42,7 +43,7 @@ export class ArticleListComponent_CS {
 
   constructor(
   ) {
-    this.route.queryParams.subscribe(routeParams => {
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(routeParams => {
       this.store.setPaginationSettings(routeParams);
       this.store.loadArticles();
     });

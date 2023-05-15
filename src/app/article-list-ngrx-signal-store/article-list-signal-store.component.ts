@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArticleListSignalStore } from './article-list-signal-store.store'
-import { toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { UiArticleListComponent } from '../ui-components/ui-article-list.component';
 import { UiPaginationComponent } from '../ui-components/ui-pagination.component';
 import { RouteParamsPaginatonState } from '../models/article-list.state';
@@ -44,7 +44,7 @@ export class ArticleListComponent_SS {
 
   constructor(
   ) {
-    this.route.queryParams.subscribe(routeParams => {
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(routeParams => {
       this.store.setPaginationSettings(routeParams);
       this.store.loadArticles();
     });
